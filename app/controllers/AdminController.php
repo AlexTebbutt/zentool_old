@@ -21,8 +21,9 @@ class AdminController extends BaseController {
      */
     public function index()
     {
-    
-    	$this->layout->content = View::make('admin.report');    
+    	$organisation = Organisation::all();
+    	
+    	$this->layout->content = View::make('admin.report', compact('organisation'));    
     }
 
     /**

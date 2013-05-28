@@ -10,7 +10,13 @@
 
 {{ Form::label('organisation-id', 'Organisation') }}
 
-{{ Form::select('organisation-id', array('20635122' => 'APCIMS', '25096596' => 'Camerich', '20733176' => 'RJB Stone'), '20635122') }}
+<select id="organisation-id" name="organisation-id">
+@foreach($organisation as $org)
+	
+	<option value="{{ $org->id }}">{{ $org->name }}</option>
+
+@endforeach
+</select>
 
 {{ Form::label('report-type', 'Organisation') }}
 
