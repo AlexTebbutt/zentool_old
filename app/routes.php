@@ -23,7 +23,13 @@ Route::get('/', 'SiteController@index');
 
 Route::get('login','AuthController@index');
 
-Route::get('admin','AdminController@index');
+/* Uncomment once admin panel is built for the time being fgo straight to the report */
+//Route::get('admin','AdminController@getIndex');
+Route::get('admin',function(){
+	
+	return Redirect::to('admin/report');
+	
+});
 
 //Route::get('organisations', 'OrganisationsController@index');
 
@@ -43,6 +49,9 @@ Route::post('organisations/report', 'OrganisationsController@postReport');
 //Show super admin report page
 
 //Show organisation report page
+Route::get('admin/report', 'AdminController@getReport');
+
+Route::post('admin/report', 'AdminController@postReport');
 
 //Show tickets for an organisation
 Route::get('organisations/{id}/tickets', 'TicketsController@showTicketsByOrg');

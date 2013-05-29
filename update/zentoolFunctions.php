@@ -154,7 +154,7 @@ function updateTickets($organisationID = null)
 						
 						$sql = 'INSERT INTO 
 										tickets (id,organisationID,requesterID,assigneeID,jsonURL,url,subject,status,time,createdAt,updatedAt) 
-										VALUES ("' . $ticket->id . '","' . $ticket->organization_id . '","' . $ticket->requester_id . '","'  . $ticket->assignee_id . '","' . $ticket->url . '","' . $ticketUrl . '","' . $ticket->subject . '","' . $ticket->status . '","' . $ticket->custom_fields[1]->value . '","' . $ticket->created_at . '","' . $ticket->updated_at . '")';		
+										VALUES ("' . $ticket->id . '","' . $ticket->organization_id . '","' . $ticket->requester_id . '","'  . $ticket->assignee_id . '","' . $ticket->url . '","' . $ticketUrl . '","' . $ticket->subject . '","' . $ticket->status . '","' . $ticket->custom_fields[1]->value . '","' . date('Y-m-d H:i:s', strtotime($ticket->created_at)) . '","' . date('Y-m-d H:i:s', strtotime($ticket->updated_at)) . '")';		
 						echo $sql . '<br />';
 						$DB->query($sql);
 					}

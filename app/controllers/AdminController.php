@@ -22,9 +22,58 @@ class AdminController extends BaseController {
     public function index()
     {
     	$organisation = Organisation::all();
-    	
-    	$this->layout->content = View::make('admin.report', compact('organisation'));    
+    	$organisation->dateTo = date('d-m-Y');
+			$tickets = NULL;
+    	$this->layout->content = View::make('admin.report', compact('organisation','tickets'));    
     }
+
+	public function getReport()
+	{
+    $organisation = Organisation::all();
+  	$organisation->dateTo = date('d-m-Y');
+		$tickets = NULL;
+	
+  	$this->layout->content = View::make('admin.report', compact('organisation','tickets'));  		
+		
+	}
+	
+	public function postReport()
+	{
+	
+  	$organisation = Organisation::all();
+  	$organisationID = Input::get('organisation-id');
+  	$organisation->dateTo = date('d-m-Y');  		
+		$organisation->organisationID = $organisationID;
+		
+  	//Retrieve tickets for organistion
+ 		if(Input::get('report-type') == 'all')
+		{
+
+	  	$tickets = Ticket::where('organisationID', $organisationID)->get();
+	  
+	  } 
+	  elseif (Input::get('report-type') == 'date-range')
+	  {
+
+	  	$tickets = Ticket::where('organisationID', $organisationID)->where('updatedAt','>=',date('Y-m-d', strtotime(Input::get('date-from'))))->where('updatedAt','<=',date('Y-m-d', strtotime(Input::get('date-to'))))->get();
+
+	  }  	
+/*
+  	$queries = DB::getQueryLog();
+		$last_query = end($queries);
+
+		var_dump($last_query);
+*/
+
+		$this->layout->content = View::make('admin.report', compact('organisation', 'tickets')); 
+		
+	}
+
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.

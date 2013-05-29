@@ -18,12 +18,20 @@ class UsersTableSeeder extends Seeder {
         	'active' => '1'),
         	array('id' => '2',
 					'organisationID' => '20733176',
-        	'username' => 'user',
-        	'fullname' => 'A User',
+        	'username' => 'rjb',
+        	'fullname' => 'RJB Stone',
         	'type' => 'user',
         	'email' => 'alex.tebbutt@images.co.uk',
         	'password' => Hash::make('user'),
-        	'active' => '1')    
+        	'active' => '1'),
+        	array('id' => '3',
+					'organisationID' => '25096596',
+        	'username' => 'camerich',
+        	'fullname' => 'Camerich',
+        	'type' => 'user',
+        	'email' => 'alex.tebbutt@images.co.uk',
+        	'password' => Hash::make('user'),
+        	'active' => '1')     
         );
 
         // Uncomment the below to run the seeder
