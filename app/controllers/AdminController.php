@@ -31,7 +31,9 @@ class AdminController extends BaseController {
 	{
     $organisation = Organisation::all();
   	$organisation->dateTo = date('d-m-Y');
+		$organisation->organisationID = NULL;
 		$tickets = NULL;
+		$test = NULL;
 	
   	$this->layout->content = View::make('admin.report', compact('organisation','tickets'));  		
 		
@@ -40,11 +42,15 @@ class AdminController extends BaseController {
 	public function postReport()
 	{
 	
+		$test = new stdClass();
+		$test->name = "This should work";
+ 
   	$organisation = Organisation::all();
   	$organisationID = Input::get('organisation-id');
   	$organisation->dateTo = date('d-m-Y');  		
 		$organisation->organisationID = $organisationID;
 		
+		var_dump($test);
   	//Retrieve tickets for organistion
  		if(Input::get('report-type') == 'all')
 		{
@@ -65,7 +71,7 @@ class AdminController extends BaseController {
 		var_dump($last_query);
 */
 
-		$this->layout->content = View::make('admin.report', compact('organisation', 'tickets')); 
+		$this->layout->content = View::make('admin.report', compact('organisation', 'tickets','test')); 
 		
 	}
 
