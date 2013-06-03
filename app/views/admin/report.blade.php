@@ -2,7 +2,7 @@
 
 {{ Form::open(array('method' => 'POST', 'class' => 'login')) }}
 
-<h1 class="form-title">Admin | Reporting</h1>
+<h1 class="form-title">Admin | Reporting - old</h1>
 
 {{ Form::label('report-on', 'Report On') }}
 
