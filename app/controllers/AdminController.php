@@ -83,25 +83,27 @@ class AdminController extends BaseController {
 				$dateRangeTo = date('Y-m-t', strtotime($dateFrom));
 			}
 
-			echo 'report date from' . $reportDateFrom . '<br />';
-			echo 'report date to: ' . $reportDateTo . '<br />';
-			echo 'date from' . $dateFrom . '<br />';
-			echo 'date to: ' . $dateTo . '<br />';	
-
 			//Loop through tickets month by month, build the ticket section of the report
 			$data = NULL;
+			$headings = new stdClass();
 			
 			
 			for ($dateRangeFrom = $dateFrom; $dateRangeFrom <= $reportDateTo; )
 			{
 			
-				echo 'Date Range: ' . $dateRangeFrom . ' to ' . $dateRangeTo . '<br />';	
-
-				$tickets = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->get();			
-				$data .= View::make('reports.components.tickets', compact('tickets'));
+				$headings->count = Ticket::where('organisationID', $report->orgID)->where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->count();
 				
+				if ($headings->count > 0)
+				{
+					$headings->totalTime = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->sum('time');
+					$tickets = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->get();			
+				} else {
+					$headings->totalTime = 0;
+				}
+				
+				$headings->monthTitle = date('F', strtotime($dateRangeFrom));				
+				$data .= View::make('reports.components.tickets', compact('tickets','headings'));
 				$dateRangeFrom = date('Y-m-01', strtotime(date('Y-m-d',strtotime($dateRangeFrom . "+1 month"))));
-
 				$dateRangeTo = date('Y-m-t', strtotime($dateRangeFrom));
 				
 				if ($dateRangeTo > $reportDateTo) $dateRangeTo = $reportDateTo;
