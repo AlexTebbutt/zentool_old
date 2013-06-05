@@ -51,6 +51,8 @@ class AdminController extends BaseController {
 			$report = new stdClass();
 			$report->orgID = Input::get('organisation-id');
 			$report->dateTo = date('d-m-Y');
+			$result = Organisation::where('id', $report->orgID)->first(array('name'));
+			$report->orgName = $result->name;
 			
 			//Get organisations for drop down
 			$organisation = Organisation::all();
@@ -72,6 +74,9 @@ class AdminController extends BaseController {
 				
 			}
 
+			$report->dateFrom = date('d-m-Y', strtotime($reportDateFrom));
+			$report->dateTo = date('d-m-Y', strtotime($reportDateTo));
+			
 			$dateFrom = $reportDateFrom;
 			$dateTo = date('Y-m-t', strtotime($dateFrom));						
 
@@ -91,43 +96,43 @@ class AdminController extends BaseController {
 			for ($dateRangeFrom = $dateFrom; $dateRangeFrom <= $reportDateTo; )
 			{
 			
-				$headings->count = Ticket::where('organisationID', $report->orgID)->where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->count();
-				
-				if ($headings->count > 0)
+				//Get ticket count for date range
+				$headings->count = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->count();
+
+				if((Input::get('hide-zero') != 'hide' && $headings->count == 0) || $headings->count > 0)
 				{
-					$headings->totalTime = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->sum('time');
-					$tickets = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->get();			
-				} else {
-					$headings->totalTime = 0;
-				}
 				
-				$headings->monthTitle = date('F', strtotime($dateRangeFrom));				
-				$data .= View::make('reports.components.tickets', compact('tickets','headings'));
+					if ($headings->count > 0)
+					{
+						//Get month time total
+						$headings->totalTime = $this->formatTime(Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->sum('time'));
+						//Retrieve all tickets for date range
+						$tickets = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->get();			
+					} else {
+						$headings->totalTime = '0 Hours 0 Minutes';
+					}
+					
+					$headings->monthTitle = date('F', strtotime($dateRangeFrom));				
+					$data .= View::make('reports.components.tickets', compact('tickets','headings'));
+					
+				}
+
 				$dateRangeFrom = date('Y-m-01', strtotime(date('Y-m-d',strtotime($dateRangeFrom . "+1 month"))));
 				$dateRangeTo = date('Y-m-t', strtotime($dateRangeFrom));
 				
 				if ($dateRangeTo > $reportDateTo) $dateRangeTo = $reportDateTo;
 			
 			}		
-			
-	
-	
-			
-
-
-
-			
-
-
-			
-
-
-			//Get month time total
-			
-			//Get total time
-			
 		
+			//Get total time
+			$report->totalTime = $this->formatTime(Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$reportDateFrom)->where('updatedAt','<=',$reportDateTo . ' 23:59:59')->sum('time'));
+			
+			//Get total ticket count
+			$report->totalCount = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$reportDateFrom)->where('updatedAt','<=',$reportDateTo . ' 23:59:59')->count();
+			
 			//Generate view
+			$this->layout->content = View::make('reports.adminFull', array('organisation' => $organisation, 'report' => $report, 'data' => $data)); 	
+
 /*
 		  $queries = DB::getQueryLog();
 			$last_query = end($queries);
@@ -135,7 +140,29 @@ class AdminController extends BaseController {
 			var_dump($last_query);
 */
 
-			$this->layout->content = View::make('reports.adminFull', array('organisation' => $organisation, 'report' => $report, 'data' => $data)); 						
+					
+		}
+		
+		private function formatTime($time)
+		{
+
+			$neg = '';
+
+			if ($time == 0)
+			{
+
+				return '0 Hours 0 Minutes';
+
+			}	elseif ($time < 0) 
+			{
+				
+				$neg = '-';
+				$time = $time * -1;
+				
+			}
+		
+			return $neg . floor($time/60) . ' Hours ' . $neg . $time%60 . ' Minutes';
+			
 		}
 
 

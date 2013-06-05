@@ -2,7 +2,7 @@
 
 {{ Form::open(array('method' => 'POST', 'class' => 'login')) }}
 
-<h1 class="form-title">Admin | Reporting - test</h1>
+<h1 class="form-title">Admin Reporting</h1>
 
 {{ Form::label('report-on', 'Report On') }}
 
@@ -59,9 +59,32 @@
 
 @endif
 
+<div class="block hide-months">
+
+<input class="block" name="hide-zero" type="checkbox" value="hide"
+
+@if(Input::get('hide-zero') == 'hide')
+
+	checked="checked"
+
+@endif
+>
+
+{{ Form::label('hide-zero', 'Hide months with no tickets', array('class' => 'block')) }}
+
+</div>
+
 {{ Form::submit('Generate', array('class' => 'form-button')) }}
 
 {{ Form::close() }}
+
+<div id="report-summary" class="center">
+	
+	<h2>Report Summary For {{ $report->orgName }} generated on <?php echo date('d F Y'); ?></h2>
+	
+	<h3>{{ $report->totalCount }} Ticket(s) closed in total for period {{ $report->dateFrom }} to {{ $report->dateTo }} taking {{ $report->totalTime }}</h3>
+
+</div>
 
 {{ $data }}
 

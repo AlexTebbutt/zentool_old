@@ -2,7 +2,7 @@
 
 {{ Form::open(array('method' => 'POST', 'class' => 'login')) }}
 
-<h1 class="form-title">Admin | Reporting - test</h1>
+<h1 class="form-title">Admin Reporting</h1>
 
 {{ Form::label('report-on', 'Report On') }}
 
@@ -58,6 +58,21 @@
 {{ Form::text('date-to', $report->dateTo ) }}
 
 @endif
+
+<div class="block hide-months">
+
+<input class="block" name="hide-zero" type="checkbox" value="hide"
+
+@if(Input::get('hide-zero') == 'hide')
+
+	checked="checked"
+
+@endif
+>
+
+{{ Form::label('hide-zero', 'Hide months with no tickets', array('class' => 'block')) }}
+
+</div>
 
 {{ Form::submit('Generate', array('class' => 'form-button')) }}
 

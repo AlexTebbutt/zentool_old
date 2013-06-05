@@ -49,10 +49,16 @@
 		 - To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
 		 - Transparency is not recommended (iOS will put a black BG behind the icon) -->
 	
+	
+	<!-- 	Lets load some fonts -->
+	<link href='http://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+	
 	<!-- concatenate and minify for production -->
 	
 	{{ HTML::style('_/css/reset.css'); }}
 	{{ HTML::style('_/css/style.css'); }}
+	{{ HTML::style('_/css/print.css'); }}
 
 	<!-- This is an un-minified, complete version of Modernizr. 
 		 Before you move to production, you should generate a custom build that only has the detects you need. -->
