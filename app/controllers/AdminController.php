@@ -40,7 +40,7 @@ class AdminController extends BaseController {
 			
 			$data = NULL;
 		
-	  	$this->layout->content = View::make('reports.adminFull', array('organisation' => $organisation, 'report' => $report, 'data' => $data));		
+	  	$this->layout->content = View::make('reports.adminShow', array('organisation' => $organisation, 'report' => $report, 'data' => $data));		
 			
 		}
 		

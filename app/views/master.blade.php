@@ -58,7 +58,7 @@
 	
 	{{ HTML::style('_/css/reset.css'); }}
 	{{ HTML::style('_/css/style.css'); }}
-	{{ HTML::style('_/css/print.css'); }}
+	{{ HTML::style('_/css/print.css', array('media' => 'print')); }}
 
 	<!-- This is an un-minified, complete version of Modernizr. 
 		 Before you move to production, you should generate a custom build that only has the detects you need. -->
