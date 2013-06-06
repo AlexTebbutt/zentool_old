@@ -138,6 +138,8 @@ td {
 }
 
 .open-button {
+	margin-top: -8px;
+	font-size: 30px;
 	-moz-transition: -moz-transform 2s;
 	-webkit-transition: -webkit-transform 2s;
 	-o-transition: -o-transform 2s;
@@ -151,6 +153,11 @@ td {
   -o-transform:rotate(135deg);
   transform:rotate(135deg);
  }
+
+
+.open-button a {
+	color: rgb(222,70,4);
+}
 
 /* Typography
 -------------------------------------------------------------------------------*/

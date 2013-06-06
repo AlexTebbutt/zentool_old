@@ -17,7 +17,7 @@
 			
 			</td>
 			
-			<td width="150" align="left" valign="top">{{ $ticket->updatedAt }}</td>
+			<td width="150" align="left" valign="top"><?php echo date('d-m-Y H:m',strtotime($ticket->updatedAt)); ?></td>
 			
 			<td width="500" align="left">{{ $ticket->subject }}</td>
 			

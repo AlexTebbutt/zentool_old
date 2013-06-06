@@ -107,7 +107,7 @@ class AdminController extends BaseController {
 						//Get month time total
 						$headings->totalTime = $this->formatTime(Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->sum('time'));
 						//Retrieve all tickets for date range
-						$tickets = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->get();			
+						$tickets = Ticket::where('organisationID', $report->orgID)->where('updatedAt','>=',$dateRangeFrom)->where('updatedAt','<=',$dateRangeTo . ' 23:59:59')->orderBy('updatedAt', 'asc')->get();			
 					} else {
 						$headings->totalTime = '0 Hours 0 Minutes';
 					}
